@@ -1,0 +1,5 @@
+App\Entity\Student:
+  student{1..10}:
+    firstName: '<firstName()>'
+    lastName: '<lastName()>'
+    birthDate: '<dateTimeBetween("-25 years", "-17 years")>'
