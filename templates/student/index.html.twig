@@ -1,0 +1,28 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello StudentController!{% endblock %}
+
+{% block body %}
+<div class="container">
+    <div class="col-12">
+        <div class="table-responsive">
+            <table class="table table-bordered table-hover text-center">
+                <thead>
+                    <th>Last name</th>
+                    <th>First name</th>
+                    <th>Birth date</th>
+                </thead>
+                <tbody>
+                    {% for student in students %}
+                    <tr>
+                        <td>{{ student.lastName }}</td>
+                        <td>{{ student.firstName }}</td>
+                        <td>{{ student.birthDate|date('Y-m-d') }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}
