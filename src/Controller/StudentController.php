@@ -2,8 +2,10 @@
 
 namespace App\Controller;
 
+use App\Entity\Assessment;
 use App\Entity\Student;
 use App\Enum\FlashTypeEnum;
+use App\Form\AssessmentType;
 use App\Form\Handler\CreateStudentFormHandler;
 use App\Form\StudentType;
 use App\Repository\StudentRepository;
@@ -20,13 +22,33 @@ class StudentController extends AbstractController
     /**
      * @Route("/student/{student}", name="student_card", requirements={"student"="\d+"}))
      *
+     *
      * @param Student $student
+     * @param EntityManagerInterface $entityManager
+     * @param Request $request
      * @return Response
      */
-    public function view(Student $student): Response
+    public function view(Student $student, EntityManagerInterface $entityManager, Request $request): Response
     {
+        $assessment = new Assessment();
+        $assessment->setStudent($student);
+
+        $assessmentType = $this->createForm(AssessmentType::class, $assessment);
+        $assessmentType->handleRequest($request);
+
+        if ($assessmentType->isSubmitted() && $assessmentType->isValid()) {
+            $student->addAssessment($assessment);
+            $entityManager->persist($student);
+            $entityManager->flush();
+
+            $this->addFlash(FlashTypeEnum::SUCCESS,
+                sprintf('Assessment added to %s %s', $student->getFirstName(), $student->getLastName())
+            );
+        }
+
         return $this->render('student/view.html.twig', [
-            'student' => $student
+            'student' => $student,
+            'form' => $assessmentType->createView()
         ]);
     }
 
