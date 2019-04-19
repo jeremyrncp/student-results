@@ -23,6 +23,9 @@
                         <td>{{ student.firstName }}</td>
                         <td>{{ student.birthDate|date('Y-m-d') }}</td>
                         <td>
+                            <a href="{{ path('student_card', {'student':student.id}) }}" class="btn btn-outline-success">
+                                <i class="fas fa-search"></i> View
+                            </a>
                             <a href="{{ path('student_edit', {'student':student.id}) }}" class="btn btn-outline-dark">
                                 <i class="fas fa-edit"></i> Edit
                             </a>

@@ -23,7 +23,7 @@ class StudentControllerTest extends WebTestCase
         $this->client->catchExceptions(false);
         $this->expectException(NotFoundHttpException::class);
 
-        $this->client->request('GET', '/students/99999999/edit');
+        $this->client->request('GET', '/student/99999999/edit');
     }
 
     public function testMustObtainAnErrorWhenEditStudentButIsntExist()
@@ -31,12 +31,12 @@ class StudentControllerTest extends WebTestCase
         $this->client->catchExceptions(false);
         $this->expectException(NotFoundHttpException::class);
 
-        $this->client->request('GET', '/students/99999999/edit');
+        $this->client->request('GET', '/student/99999999/edit');
     }
 
     public function testMustObtainSuccessWhenCreateAStudentWithAllInformations()
     {
-        $this->client->request('GET', '/students/add');
+        $this->client->request('GET', '/student/add');
         $this->client->submitForm('Add student' , [
             'student[firstName]' => 'test_firstname',
             'student[lastName]' => 'test_lastname'
@@ -49,7 +49,7 @@ class StudentControllerTest extends WebTestCase
 
     public function testMustObtainErrorsWhenCreateAStudentButAllRequiredInformationsArentProvided()
     {
-        $this->client->request('GET', '/students/add');
+        $this->client->request('GET', '/student/add');
         $crawler = $this->client->submitForm('Add student' , [
             'student[firstName]' => 'test'
         ]);
@@ -59,7 +59,7 @@ class StudentControllerTest extends WebTestCase
 
     public function testMustObtainTenStudentsAndThreeInformationsByStudent()
     {
-        $crawler = $this->client->request('GET', '/students');
+        $crawler = $this->client->request('GET', '/student');
 
         $this->assertGreaterThanOrEqual(10, $crawler->filter('tr')->count());
         $this->assertGreaterThanOrEqual(30, $crawler->filter('td')->count());

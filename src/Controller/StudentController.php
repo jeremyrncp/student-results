@@ -16,8 +16,22 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class StudentController extends AbstractController
 {
+
     /**
-     * @Route("/students", name="student")
+     * @Route("/student/{student}", name="student_card", requirements={"student"="\d+"}))
+     *
+     * @param Student $student
+     * @return Response
+     */
+    public function view(Student $student): Response
+    {
+        return $this->render('student/view.html.twig', [
+            'student' => $student
+        ]);
+    }
+
+    /**
+     * @Route("/student", name="student")
      *
      * @param StudentRepository $studentRepository
      * @return Response
@@ -30,7 +44,7 @@ class StudentController extends AbstractController
     }
 
     /**
-     * @Route("/students/add", name="student_add")
+     * @Route("/student/add", name="student_add")
      *
      * @param CreateStudentFormHandler $studentFormHandler
      * @param EntityManagerInterface $entityManager
@@ -56,7 +70,7 @@ class StudentController extends AbstractController
 
 
     /**
-     * @Route("/students/{student}/edit", name="student_edit", requirements={"student"="\d+"})
+     * @Route("/student/{student}/edit", name="student_edit", requirements={"student"="\d+"})
      *
      * @param Student $student
      * @param EntityManagerInterface $entityManager
@@ -82,7 +96,7 @@ class StudentController extends AbstractController
     }
 
     /**
-     * @Route("/students/{student}/delete", name="student_delete", requirements={"student"="\d+"})
+     * @Route("/student/{student}/delete", name="student_delete", requirements={"student"="\d+"})
      *
      * @param Student $student
      * @param EntityManagerInterface $entityManager
