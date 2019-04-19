@@ -1,0 +1,11 @@
+{% for label, messages in app.session.flashBag.all %}
+    {% if label == constant('App\\Enum\\FlashTypeEnum::SUCCESS') %}
+        {% set alert = 'alert-success' %}
+    {% endif %}
+
+    {% for message in messages %}
+        <div class="alert {{ alert }}">
+            {{ message }}
+        </div>
+    {% endfor %}
+{% endfor %}
