@@ -1,0 +1,47 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Students list{% endblock %}
+
+{% block body %}
+<div class="container">
+    <div class="col-12">
+        <div class="text-right">
+            <a href="/students/add" class="btn btn-primary">Create a student</a>
+        </div>
+        <div class="table-responsive">
+            <table class="table table-bordered table-hover text-center">
+                <thead>
+                    <th>Last name</th>
+                    <th>First name</th>
+                    <th>Birth date</th>
+                    <th>Actions</th>
+                </thead>
+                <tbody>
+                    {% for student in students %}
+                    <tr>
+                        <td>{{ student.lastName }}</td>
+                        <td>{{ student.firstName }}</td>
+                        <td>{{ student.birthDate|date('Y-m-d') }}</td>
+                        <td>
+                            <a href="{{ path('student_card', {'student':student.id}) }}" class="btn btn-outline-success">
+                                <i class="fas fa-search"></i> View
+                            </a>
+                            <a href="{{ path('student_edit', {'student':student.id}) }}" class="btn btn-outline-dark">
+                                <i class="fas fa-edit"></i> Edit
+                            </a>
+                            <button data-href="{{ path('student_delete', {'student':student.id}) }}" class="btn btn-outline-danger">
+                                <i class="fas fa-trash"></i> Delete
+                            </button>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}
+ {% block javascripts %}
+     {{ encore_entry_script_tags('students') }}
+     {{ parent() }}
+ {% endblock %}
