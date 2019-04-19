@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -34,6 +36,16 @@ class Student
      * @Assert\NotBlank()
      */
     private $birthDate;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Assessment", mappedBy="student", orphanRemoval=true, cascade={"persist"})
+     */
+    private $assessments;
+
+    public function __construct()
+    {
+        $this->assessments = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -72,6 +84,37 @@ class Student
     public function setBirthDate(\DateTimeInterface $BirthDate): self
     {
         $this->birthDate = $BirthDate;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Assessment[]
+     */
+    public function getAssessments(): Collection
+    {
+        return $this->assessments;
+    }
+
+    public function addAssessment(Assessment $assessment): self
+    {
+        if (!$this->assessments->contains($assessment)) {
+            $this->assessments[] = $assessment;
+            $assessment->setStudent($this);
+        }
+
+        return $this;
+    }
+
+    public function removeAssessment(Assessment $assessment): self
+    {
+        if ($this->assessments->contains($assessment)) {
+            $this->assessments->removeElement($assessment);
+            // set the owning side to null (unless already changed)
+            if ($assessment->getStudent() === $this) {
+                $assessment->setStudent(null);
+            }
+        }
 
         return $this;
     }
