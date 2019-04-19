@@ -1,0 +1,28 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Student card informations{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <div class="col-12">
+            {% if student is defined %}
+                <h1>{{ student.firstName }} {{ student.lastName }}</h1>
+                <p>
+                    <b>Birth date</b> : {{ student.birthDate|date('Y-m-d') }}<br />
+                </p>
+                <p>
+                    <a href="{{ path('student_edit', {'student':student.id}) }}" class="btn btn-outline-dark">
+                        <i class="fas fa-edit"></i> Edit
+                    </a>
+                    <button data-href="{{ path('student_delete', {'student':student.id}) }}" class="btn btn-outline-danger">
+                        <i class="fas fa-trash"></i> Delete
+                    </button>
+                </p>
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}
+{% block javascripts %}
+    {{ encore_entry_script_tags('students') }}
+    {{ parent() }}
+{% endblock %}
